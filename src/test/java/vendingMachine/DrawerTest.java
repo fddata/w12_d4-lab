@@ -44,4 +44,10 @@ public class DrawerTest {
         drawer.addProductToDrawer(cola);
         assertEquals(5, drawer.getNumberOfProducts());
     }
+
+    @Test
+    public void canGetPriceOfProduct() {
+        drawer.addProductToDrawer(cola);
+        assertEquals(100, drawer.getPriceOfProduct());
+    }
 }

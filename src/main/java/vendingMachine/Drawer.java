@@ -32,4 +32,8 @@ public class Drawer {
     public int getCapacity() {
         return capacity;
     }
+
+    public int getPriceOfProduct(){
+        return this.products.get(0).getPrice();
+    }
 }
