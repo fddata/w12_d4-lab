@@ -50,4 +50,11 @@ public class DrawerTest {
         drawer.addProductToDrawer(cola);
         assertEquals(100, drawer.getPriceOfProduct());
     }
+
+    @Test
+    public void canDispenseProduct() {
+        drawer.addProductToDrawer(cola);
+        drawer.dispenseProduct();
+        assertEquals(0, drawer.getNumberOfProducts());
+    }
 }

@@ -36,4 +36,8 @@ public class Drawer {
     public int getPriceOfProduct(){
         return this.products.get(0).getPrice();
     }
+
+    public void dispenseProduct(){
+        this.products.remove(0);
+    }
 }
