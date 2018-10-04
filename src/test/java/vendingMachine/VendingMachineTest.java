@@ -22,6 +22,7 @@ public class VendingMachineTest {
     Coin twopence;
     Coin fiftypence;
     Coin twentypence;
+    Coin onepound;
 
 
     @Before
@@ -33,6 +34,7 @@ public class VendingMachineTest {
         twopence = new Coin(CoinValue.TWOPENCE);
         fiftypence = new Coin(CoinValue.FIFTYPENCE);
         twentypence = new Coin(CoinValue.TWENTYPENCE);
+        onepound = new Coin(CoinValue.ONEPOUND);
         inputCoins = new CoinHolder();
 
         bankCoins = new CoinHolder();
@@ -80,5 +82,18 @@ public class VendingMachineTest {
         assertEquals(0, drawer.getNumberOfProducts());
         assertEquals(0, vendingMachine.getValueOfInputCoins());
         assertEquals(100, vendingMachine.getValueOfBankCoins());
+    }
+
+
+    @Test
+    public void checkSufficentFundsMessage() {
+        inputCoins.addCoinToAmount(onepound);
+        assertEquals("Please take the product. ENJOYYYYY!", vendingMachine.vendFromDrawer(drawer));
+    }
+
+    @Test
+    public void checkInsufficentFundsMessage() {
+        inputCoins.addCoinToAmount(twentypence);
+        assertEquals("Please insert 80 pence.", vendingMachine.vendFromDrawer(drawer));
     }
 }

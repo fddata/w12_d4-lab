@@ -43,12 +43,19 @@ public class VendingMachine {
     }
 
 
-    public void vendFromDrawer(Drawer drawer){
+
+    public String vendFromDrawer(Drawer drawer){
        if (this.checkSufficientFunds(drawer)){
            int selectedDrawerIndex = this.drawers.indexOf(drawer);
            this.drawers.get(selectedDrawerIndex).dispenseProduct();
            this.inputCoins.transferCoins(this.bankCoins);
+           return "Please take the product. ENJOYYYYY!";
        }
+       else{
+           int difference = (this.getPriceFromDrawer(drawer) - this.getValueOfInputCoins());
+           return "Please insert " + difference + " pence.";
+       }
+
     }
 
     public int getValueOfBankCoins() {
