@@ -1,4 +1,4 @@
-package vendingMachine;
+package drawers;
 
 import products.Product;
 

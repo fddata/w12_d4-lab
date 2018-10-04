@@ -1,5 +1,7 @@
 package vendingMachine;
 
+import drawers.Drawer;
+import drawers.DrawerCode;
 import org.junit.Before;
 import org.junit.Test;
 import products.Cola;

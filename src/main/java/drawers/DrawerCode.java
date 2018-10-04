@@ -1,4 +1,4 @@
-package vendingMachine;
+package drawers;
 
 public enum DrawerCode {
 
