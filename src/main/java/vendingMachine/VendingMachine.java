@@ -12,11 +12,13 @@ public class VendingMachine {
 
     private CoinHolder inputCoins;
     private CoinHolder bankCoins;
+    private CoinHolder returnCoins;
     private ArrayList<Drawer> drawers;
 
-    public VendingMachine(CoinHolder inputCoins, CoinHolder bankCoins) {
+    public VendingMachine(CoinHolder inputCoins, CoinHolder bankCoins, CoinHolder returnCoins) {
         this.inputCoins = inputCoins;
         this.bankCoins = bankCoins;
+        this.returnCoins = returnCoins;
         this.drawers = new ArrayList<>();
     }
 
@@ -42,16 +44,22 @@ public class VendingMachine {
        return this.getValueOfInputCoins() >= this.getPriceFromDrawer(drawer);
     }
 
+    public boolean checkProductIsInStock(Drawer drawer){
+       return drawer.getNumberOfProducts() > 0;
+    }
 
 
     public String vendFromDrawer(Drawer drawer){
+        if (!checkProductIsInStock(drawer)){
+            return "Product out of stock";
+        }
        if (this.checkSufficientFunds(drawer)){
            int selectedDrawerIndex = this.drawers.indexOf(drawer);
            this.drawers.get(selectedDrawerIndex).dispenseProduct();
            this.inputCoins.transferCoins(this.bankCoins);
            return "Please take the product. ENJOYYYYY!";
        }
-       else{
+       else {
            int difference = (this.getPriceFromDrawer(drawer) - this.getValueOfInputCoins());
            return "Please insert " + difference + " pence.";
        }
@@ -60,5 +68,9 @@ public class VendingMachine {
 
     public int getValueOfBankCoins() {
         return this.bankCoins.getTotalValue();
+    }
+
+    public void returnChange() {
+        this.inputCoins.transferCoins(returnCoins);
     }
 }

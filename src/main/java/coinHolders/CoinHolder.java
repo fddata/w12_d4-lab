@@ -31,7 +31,6 @@ public class CoinHolder {
     }
 
 
-
     public void transferCoins(CoinHolder targetHolder){
         for(Coin coin: this.coins){
             targetHolder.addCoinToAmount(coin);

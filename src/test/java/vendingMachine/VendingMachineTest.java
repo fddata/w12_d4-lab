@@ -14,10 +14,12 @@ import static org.junit.Assert.*;
 public class VendingMachineTest {
 
     Drawer drawer;
+    Drawer emptyDrawer;
     Cola cola;
     VendingMachine vendingMachine;
     CoinHolder inputCoins;
     CoinHolder bankCoins;
+    CoinHolder returnCoins;
     Coin onepence;
     Coin twopence;
     Coin fiftypence;
@@ -30,15 +32,16 @@ public class VendingMachineTest {
         drawer = new Drawer(DrawerCode.A1);
         cola = new Cola("IrnBru", "Regular");
         drawer.addProductToDrawer(cola);
+        emptyDrawer = new Drawer(DrawerCode.A2);
         onepence = new Coin(CoinValue.ONEPENCE);
         twopence = new Coin(CoinValue.TWOPENCE);
         fiftypence = new Coin(CoinValue.FIFTYPENCE);
         twentypence = new Coin(CoinValue.TWENTYPENCE);
         onepound = new Coin(CoinValue.ONEPOUND);
         inputCoins = new CoinHolder();
-
+        returnCoins = new CoinHolder();
         bankCoins = new CoinHolder();
-        vendingMachine = new VendingMachine(inputCoins, bankCoins);
+        vendingMachine = new VendingMachine(inputCoins, bankCoins, returnCoins);
         vendingMachine.addDrawer(drawer);
     }
 
@@ -84,6 +87,16 @@ public class VendingMachineTest {
         assertEquals(100, vendingMachine.getValueOfBankCoins());
     }
 
+    @Test
+    public void cannotVendFromEmptyDrawerWithSufficentFunds() {
+        inputCoins.addCoinToAmount(fiftypence);
+        inputCoins.addCoinToAmount(fiftypence);
+        vendingMachine.vendFromDrawer(emptyDrawer);
+//        assertEquals(0, drawer.getNumberOfProducts());
+        assertEquals(100, vendingMachine.getValueOfInputCoins());
+        assertEquals(0, vendingMachine.getValueOfBankCoins());
+    }
+
 
     @Test
     public void checkSufficentFundsMessage() {
@@ -92,8 +105,36 @@ public class VendingMachineTest {
     }
 
     @Test
+    public void checkOutOfStockMessage() {
+        assertEquals("Product out of stock", vendingMachine.vendFromDrawer(emptyDrawer));
+    }
+
+    @Test
     public void checkInsufficentFundsMessage() {
         inputCoins.addCoinToAmount(twentypence);
         assertEquals("Please insert 80 pence.", vendingMachine.vendFromDrawer(drawer));
+    }
+
+    @Test
+    public void canReturnCoins() {
+        inputCoins.addCoinToAmount(onepound);
+        inputCoins.addCoinToAmount(fiftypence);
+        inputCoins.addCoinToAmount(twentypence);
+        vendingMachine.returnChange();
+        assertEquals(3, returnCoins.getNumberOfCoins());
+        assertEquals(170, returnCoins.getTotalValue());
+        assertEquals(0, inputCoins.getNumberOfCoins());
+        assertEquals(0, inputCoins.getTotalValue());
+    }
+
+    @Test
+    public void checkProductIsInStockTrue() {
+        assertEquals(true, vendingMachine.checkProductIsInStock(drawer));
+    }
+
+    @Test
+    public void checkProductIsInStockFalse() {
+
+        assertEquals(false, vendingMachine.checkProductIsInStock(emptyDrawer));
     }
 }
