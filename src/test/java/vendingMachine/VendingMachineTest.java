@@ -34,11 +34,10 @@ public class VendingMachineTest {
         fiftypence = new Coin(CoinValue.FIFTYPENCE);
         twentypence = new Coin(CoinValue.TWENTYPENCE);
         inputCoins = new CoinHolder();
-        inputCoins.addCoinToAmount(fiftypence);
+
         bankCoins = new CoinHolder();
         vendingMachine = new VendingMachine(inputCoins, bankCoins);
         vendingMachine.addDrawer(drawer);
-
     }
 
 
@@ -56,6 +55,30 @@ public class VendingMachineTest {
 
     @Test
     public void canGetInputCoinValue() {
+        inputCoins.addCoinToAmount(fiftypence);
         assertEquals(50, vendingMachine.getValueOfInputCoins());
+    }
+
+    @Test
+    public void checkSufficientFundsFalse() {
+        inputCoins.addCoinToAmount(fiftypence);
+        assertEquals(false, vendingMachine.checkSufficientFunds(drawer));
+    }
+
+    @Test
+    public void checkSufficientFundsTrue() {
+        inputCoins.addCoinToAmount(fiftypence);
+        inputCoins.addCoinToAmount(fiftypence);
+        assertEquals(true, vendingMachine.checkSufficientFunds(drawer));
+    }
+
+    @Test
+    public void canVendFromDrawer() {
+        inputCoins.addCoinToAmount(fiftypence);
+        inputCoins.addCoinToAmount(fiftypence);
+        vendingMachine.vendFromDrawer(drawer);
+        assertEquals(0, drawer.getNumberOfProducts());
+        assertEquals(0, vendingMachine.getValueOfInputCoins());
+        assertEquals(100, vendingMachine.getValueOfBankCoins());
     }
 }

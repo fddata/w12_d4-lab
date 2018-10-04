@@ -38,5 +38,20 @@ public class VendingMachine {
        return this.inputCoins.getTotalValue();
     }
 
+    public boolean checkSufficientFunds(Drawer drawer){
+       return this.getValueOfInputCoins() >= this.getPriceFromDrawer(drawer);
+    }
 
+
+    public void vendFromDrawer(Drawer drawer){
+       if (this.checkSufficientFunds(drawer)){
+           int selectedDrawerIndex = this.drawers.indexOf(drawer);
+           this.drawers.get(selectedDrawerIndex).dispenseProduct();
+           this.inputCoins.transferCoins(this.bankCoins);
+       }
+    }
+
+    public int getValueOfBankCoins() {
+        return this.bankCoins.getTotalValue();
+    }
 }
